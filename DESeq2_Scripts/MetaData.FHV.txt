@@ -1,0 +1,7 @@
+#sample	treatment
+FHV-R1_ViReMa   FHV
+FHV-R2_ViReMa   FHV
+FHV-R4_ViReMa   FHV
+S2-FHV-R1_ViReMa   S2-FHV
+S2-FHV-R2_ViReMa   S2-FHV
+S2-FHV-R4_ViReMa   S2-FHV
