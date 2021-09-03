@@ -22,7 +22,7 @@ import math
 # args = parser.parse_args()
 
 #Make a report dataframe with sample column loaded
-version = 0.20
+version = 0.21
 if (version >= 0.21):
     report = pd.DataFrame(columns=['sample',
                                    'unique_junctions',
@@ -42,13 +42,13 @@ if (version < 0.21):
                                    "total_nts",
                                    "jfreq"])
 # sample_list = [line.rstrip('\n') for line in open(str(args.Sample_list))]
-sample_list = [line.rstrip('\n') for line in open("/home/denison-thelio/Current_projects/RNAseq/MA_MHV_NHC_virion/samples.txt")]
+sample_list = [line.rstrip('\n') for line in open("/home/denison-thelio/Current_projects/RNAseq/WT_P250_Vantage_061521/WT_samples.txt")]
 report['sample'] = sample_list
 #Set other variables
 virus = "MHV"
-wd = "/home/denison-thelio/Current_projects/RNAseq/MA_MHV_NHC_virion/"
+wd = "/home/denison-thelio/Current_projects/RNAseq/WT_P250_Vantage_061521/"
 od = wd
-exp = "MA_MHV_NHC_virion"
+exp = "WT_P250_Vantage_061521"
 
 # virus = str(args.Virus)
 # wd = str(args.Working_Dir)
@@ -103,7 +103,7 @@ if Shannon_Entropy == True:
             for Gene in Dicts:
                 Data = Dicts[Gene]
                 if Virus_Accession in Gene:
-                    coverage_file = pd.read_csv(wd + sample_name + "_virema/" + sample_name + "_virema_coverage.txt", sep = "\t", header=0)
+                    coverage_file = pd.read_csv(wd + sample_name + "_virema_coverage.txt", sep = "\t", header=0)
                     Virus_Coverage = np.mean(coverage_file['Coverage'])
                     Total_Reads = Virus_Coverage
                 else:
@@ -137,7 +137,7 @@ for file in os.listdir(bed_dir):
     if fnmatch.fnmatch(file, "*_Virus_Recombination_Results.bed"):
         sample_name = str(file.split("_")[0])
         if (version >= 0.21):
-            bed = pd.read_csv(bed_dir + file, sep="\t", header=0, index_col=False, names=['genome', 'start', 'stop', 'type', 'depth', 'strand', 'rgb1', 'rgb2', 'start_seq', 'stop_seq'])
+            bed = pd.read_csv(bed_dir + file, sep="\t", header=0, index_col=False,  usecols = [i for i in range(6)], names=['genome', 'start', 'stop', 'type', 'depth', 'strand'])
         if (version < 0.21):
             bed = pd.read_csv(bed_dir + file, sep="\t", header=0, index_col=False,
                               names=['genome', 'start', 'stop', 'type', 'depth', 'strand', 'start1', 'stop1'])
@@ -219,19 +219,99 @@ report.to_csv(od + exp + "_ViReMa_report.txt", sep="\t", index=False)
 if not os.path.exists(od + '/sgmRNAs_DVGs'):
     os.makedirs(od + '/sgmRNAs_DVGs')
 save_dir_sgmRNAs = od + 'sgmRNAs_DVGs/'
-sgmRNA_report = pd.DataFrame(columns=['sample',
-                                      'total_nts',
-                                      'total_sgmRNA_depth',
-                                      'major_sgmRNA_depth',
-                                      'minor_sgmRNA_depth',
-                                      'DVG_depth',
-                                      'total_junctions',
-                                      'percent_DVGs',
-                                      'percent_major_sgmRNA',
-                                      'percent_minor_sgmRNA',
-                                      'DVG_jfreq',
-                                      'major_sgmRNA_jfreq',
-                                      'minor_sgmRNA_jfreq'])
+if (virus == "MHV"):
+    sgmRNA_report = pd.DataFrame(columns=['sample',
+                                          'total_nts',
+                                          'total_sgmRNA_depth',
+                                          'sgmRNA2_depth',
+                                          'sgmRNA3_depth',
+                                          'sgmRNA4_depth',
+                                          'sgmRNA5_depth',
+                                          'sgmRNA6_depth',
+                                          'sgmRNA7_depth',
+                                          'DVG_depth',
+                                          'total_junctions',
+                                          'percent_DVGs',
+                                          'percent_sgmRNA',
+                                          'percent_sgmRNA2',
+                                          'percent_sgmRNA3',
+                                          'percent_sgmRNA4',
+                                          'percent_sgmRNA5',
+                                          'percent_sgmRNA6',
+                                          'percent_sgmRNA7',
+                                          'DVG_jfreq',
+                                          'sgmRNA_jfreq',
+                                          'sgmRNA2_jfreq',
+                                          'sgmRNA3_jfreq',
+                                          'sgmRNA4_jfreq',
+                                          'sgmRNA5_jfreq',
+                                          'sgmRNA6_jfreq',
+                                          'sgmRNA7_jfreq'])
+if (virus == "MERS"):
+    sgmRNA_report = pd.DataFrame(columns=['sample',
+                                          'total_nts',
+                                          'total_sgmRNA_depth',
+                                          'sgmRNA2_depth',
+                                          'sgmRNA3_depth',
+                                          'sgmRNA4_depth',
+                                          'sgmRNA5_depth',
+                                          'sgmRNA6_depth',
+                                          'sgmRNA7_depth',
+                                          'sgmRNA8_depth',
+                                          'DVG_depth',
+                                          'total_junctions',
+                                          'percent_DVGs',
+                                          'percent_sgmRNA',
+                                          'percent_sgmRNA2',
+                                          'percent_sgmRNA3',
+                                          'percent_sgmRNA4',
+                                          'percent_sgmRNA5',
+                                          'percent_sgmRNA6',
+                                          'percent_sgmRNA7',
+                                          'percent_sgmRNA8',
+                                          'DVG_jfreq',
+                                          'sgmRNA_jfreq',
+                                          'sgmRNA2_jfreq',
+                                          'sgmRNA3_jfreq',
+                                          'sgmRNA4_jfreq',
+                                          'sgmRNA5_jfreq',
+                                          'sgmRNA6_jfreq',
+                                          'sgmRNA7_jfreq',
+                                          'sgmRNA8_jfreq'])
+if (virus == "SARS2"):
+    sgmRNA_report = pd.DataFrame(columns=['sample',
+                                          'total_nts',
+                                          'total_sgmRNA_depth',
+                                          'sgmRNA2_depth',
+                                          'sgmRNA3_depth',
+                                          'sgmRNA4_depth',
+                                          'sgmRNA5_depth',
+                                          'sgmRNA6_depth',
+                                          'sgmRNA7_depth',
+                                          'sgmRNA8_depth',
+                                          'sgmRNA_depth',
+                                          'DVG_depth',
+                                          'total_junctions',
+                                          'percent_DVGs',
+                                          'percent_sgmRNA',
+                                          'percent_sgmRNA2',
+                                          'percent_sgmRNA3',
+                                          'percent_sgmRNA4',
+                                          'percent_sgmRNA5',
+                                          'percent_sgmRNA6',
+                                          'percent_sgmRNA7',
+                                          'percent_sgmRNA8',
+                                          'percent_sgmRNA9',
+                                          'DVG_jfreq',
+                                          'sgmRNA_jfreq',
+                                          'sgmRNA2_jfreq',
+                                          'sgmRNA3_jfreq',
+                                          'sgmRNA4_jfreq',
+                                          'sgmRNA5_jfreq',
+                                          'sgmRNA6_jfreq',
+                                          'sgmRNA7_jfreq',
+                                          'sgmRNA8_jfreq',
+                                          'sgmRNA9_jfreq'])
 sgmRNA_report['sample'] = sample_list
 for file in os.listdir(wd):
     if fnmatch.fnmatch(file, "*_coverage.txt"):
@@ -259,66 +339,31 @@ for file in os.listdir(wd + "Junction_Files/"):
                     )
                 ))
             sgmRNAs = forward_junctions[((forward_junctions['start_type'] == "TRSL") & (forward_junctions['stop_type'].str.contains("sgmRNA")))]
+            sgmRNAs.to_csv(save_dir_sgmRNAs + sample_name + "_sgmRNAs.txt", sep="\t", index=False)
             sgmRNA2 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA2"].sort_values(by=['depth'], ascending=False)
             sgmRNA3 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA3"].sort_values(by=['depth'], ascending=False)
             sgmRNA4 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA4"].sort_values(by=['depth'], ascending=False)
             sgmRNA5 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA5"].sort_values(by=['depth'], ascending=False)
             sgmRNA6 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA6"].sort_values(by=['depth'], ascending=False)
             sgmRNA7 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA7"].sort_values(by=['depth'], ascending=False)
-            sgmRNA_canonical = pd.DataFrame()
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA2.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA3.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA4.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA5.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA6.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA7.head(1), ignore_index=True)
-            if (version >= 0.21):
-                sgmRNA_alternative = sgmRNAs.merge(sgmRNA_canonical,
-                                                   on=['genome', 'start', 'stop', 'type', 'depth', 'strand', 'rgb1', 'rgb2',
-                                                       'start_seq', 'stop_seq', 'start_type', 'stop_type', 'frequency',
-                                                       'logfreq'], how="left", indicator=True)
-            if (version < 0.21):
-                sgmRNA_alternative = sgmRNAs.merge(sgmRNA_canonical,
-                                                   on=['genome', 'start', 'stop', 'type', 'depth', 'strand', 'start_type', 'stop_type', 'frequency',
-                                                       'logfreq'], how="left", indicator=True)
-            sgmRNA_alternative = sgmRNA_alternative[sgmRNA_alternative["_merge"] == "left_only"]
-            del sgmRNA_alternative["_merge"]
-            sgmRNA_alt_summary = pd.DataFrame(columns=['type', 'depth'])
-            sgmRNA_alt_summary['type'] = ['sgmRNA2', 'sgmRNA3', 'sgmRNA4', 'sgmRNA5', 'sgmRNA6', 'sgmRNA7']
-            sgmRNA2_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA2"]
-            sgmRNA3_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA3"]
-            sgmRNA4_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA4"]
-            sgmRNA5_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA5"]
-            sgmRNA6_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA6"]
-            sgmRNA7_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA7"]
-            sgmRNA2_alt_depth = sum(sgmRNA2_alt['depth'])
-            sgmRNA3_alt_depth = sum(sgmRNA3_alt['depth'])
-            sgmRNA4_alt_depth = sum(sgmRNA4_alt['depth'])
-            sgmRNA5_alt_depth = sum(sgmRNA5_alt['depth'])
-            sgmRNA6_alt_depth = sum(sgmRNA6_alt['depth'])
-            sgmRNA7_alt_depth = sum(sgmRNA7_alt['depth'])
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA2", ["depth"]] = sgmRNA2_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA3", ["depth"]] = sgmRNA3_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA4", ["depth"]] = sgmRNA4_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA5", ["depth"]] = sgmRNA5_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA6", ["depth"]] = sgmRNA6_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA7", ["depth"]] = sgmRNA7_alt_depth
+            sgmRNA2_depth = sum(sgmRNA2['depth'])
+            sgmRNA3_depth = sum(sgmRNA3['depth'])
+            sgmRNA4_depth = sum(sgmRNA4['depth'])
+            sgmRNA5_depth = sum(sgmRNA5['depth'])
+            sgmRNA6_depth = sum(sgmRNA6['depth'])
+            sgmRNA7_depth = sum(sgmRNA7['depth'])
             DVGs = forward_junctions.loc[((forward_junctions['start_type'] == "TRSL") & (forward_junctions['stop_type'] == "DVG")) | ((forward_junctions['start_type'] == "DVG"))]
             DVGs.to_csv(save_dir_sgmRNAs + sample_name + "_DVGs.txt", sep="\t", index=False)
-            sgmRNA_alt_summary.to_csv(save_dir_sgmRNAs + sample_name + "_minor_sgmRNA_summary.txt", sep="\t",
-                                      index=False)
-            sgmRNA_alternative.to_csv(save_dir_sgmRNAs + sample_name + "_minor_sgmRNAs.txt", sep="\t",
-                                      index=False)
-            sgmRNA_canonical.to_csv(save_dir_sgmRNAs + sample_name + "_major_sgmRNAs.txt", sep="\t",
-                                    index=False)
             sgmRNA_depth = sum(sgmRNAs['depth'])
-            sgmRNA_canonical_depth = sum(sgmRNA_canonical['depth'])
-            sgmRNA_alternative_depth = sum(sgmRNA_alternative['depth'])
             DVGs_depth = sum(DVGs['depth'])
             sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["total_sgmRNA_depth"]] = sgmRNA_depth
-            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["major_sgmRNA_depth"]] = sgmRNA_canonical_depth
-            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["minor_sgmRNA_depth"]] = sgmRNA_alternative_depth
             sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["DVG_depth"]] = DVGs_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA2_depth']] = sgmRNA2_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA3_depth']] = sgmRNA3_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA4_depth']] = sgmRNA4_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA5_depth']] = sgmRNA5_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA6_depth']] = sgmRNA6_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA7_depth']] = sgmRNA7_depth
         if (virus == "MERS"):
             forward_junctions['start_type'] = forward_junctions['start'].apply(
                 lambda x: "TRSL" if ((x >= 32) & (x <= 97)) else "DVG")
@@ -332,6 +377,7 @@ for file in os.listdir(wd + "Junction_Files/"):
                                         "sgmRNA8" if ((x >= 28514) & (x <= 28579)) else "DVG")))))))
             sgmRNAs = forward_junctions[
                 ((forward_junctions['start_type'] == "TRSL") & (forward_junctions['stop_type'].str.contains("sgmRNA")))]
+            sgmRNAs.to_csv(save_dir_sgmRNAs + sample_name + "_sgmRNAs.txt", sep="\t", index=False)
             sgmRNA2 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA2"].sort_values(by=['depth'], ascending=False)
             sgmRNA3 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA3"].sort_values(by=['depth'], ascending=False)
             sgmRNA4 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA4"].sort_values(by=['depth'], ascending=False)
@@ -339,82 +385,28 @@ for file in os.listdir(wd + "Junction_Files/"):
             sgmRNA6 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA6"].sort_values(by=['depth'], ascending=False)
             sgmRNA7 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA7"].sort_values(by=['depth'], ascending=False)
             sgmRNA8 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA8"].sort_values(by=['depth'], ascending=False)
-            sgmRNA_canonical = pd.DataFrame()
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA2.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA3.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA4.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA5.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA6.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA7.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA8.head(1), ignore_index=True)
-            if (version >= 0.21):
-                sgmRNA_alternative = sgmRNAs.merge(sgmRNA_canonical, on=['genome',
-                                                                         'start',
-                                                                         'stop',
-                                                                         'type',
-                                                                         'depth',
-                                                                         'strand',
-                                                                         'rgb1',
-                                                                         'rgb2',
-                                                                         'start_seq',
-                                                                         'stop_seq',
-                                                                         'start_type',
-                                                                         'stop_type',
-                                                                         'frequency',
-                                                                         'logfreq'], how="left", indicator=True)
-            if (version < 0.21):
-                sgmRNA_alternative = sgmRNAs.merge(sgmRNA_canonical, on=['genome',
-                                                                         'start',
-                                                                         'stop',
-                                                                         'type',
-                                                                         'depth',
-                                                                         'strand',
-                                                                         'start_type',
-                                                                         'stop_type',
-                                                                         'frequency',
-                                                                         'logfreq'], how="left", indicator=True)
-            sgmRNA_alternative = sgmRNA_alternative[sgmRNA_alternative["_merge"] == "left_only"]
-            del sgmRNA_alternative["_merge"]
-            sgmRNA_alt_summary = pd.DataFrame(columns=['type', 'depth'])
-            sgmRNA_alt_summary['type'] = ['sgmRNA2', 'sgmRNA3', 'sgmRNA4', 'sgmRNA5', 'sgmRNA6', 'sgmRNA7', 'sgmRNA8']
-            sgmRNA2_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA2"]
-            sgmRNA3_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA3"]
-            sgmRNA4_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA4"]
-            sgmRNA5_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA5"]
-            sgmRNA6_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA6"]
-            sgmRNA7_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA7"]
-            sgmRNA8_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA8"]
-            sgmRNA2_alt_depth = sum(sgmRNA2_alt['depth'])
-            sgmRNA3_alt_depth = sum(sgmRNA3_alt['depth'])
-            sgmRNA4_alt_depth = sum(sgmRNA4_alt['depth'])
-            sgmRNA5_alt_depth = sum(sgmRNA5_alt['depth'])
-            sgmRNA6_alt_depth = sum(sgmRNA6_alt['depth'])
-            sgmRNA7_alt_depth = sum(sgmRNA7_alt['depth'])
-            sgmRNA8_alt_depth = sum(sgmRNA8_alt['depth'])
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA2", ["depth"]] = sgmRNA2_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA3", ["depth"]] = sgmRNA3_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA4", ["depth"]] = sgmRNA4_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA5", ["depth"]] = sgmRNA5_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA6", ["depth"]] = sgmRNA6_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA7", ["depth"]] = sgmRNA7_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA8", ["depth"]] = sgmRNA8_alt_depth
+            sgmRNA2_depth = sum(sgmRNA2['depth'])
+            sgmRNA3_depth = sum(sgmRNA3['depth'])
+            sgmRNA4_depth = sum(sgmRNA4['depth'])
+            sgmRNA5_depth = sum(sgmRNA5['depth'])
+            sgmRNA6_depth = sum(sgmRNA6['depth'])
+            sgmRNA7_depth = sum(sgmRNA7['depth'])
+            sgmRNA8_depth = sum(sgmRNA8['depth'])
             DVGs = forward_junctions.loc[
                 ((forward_junctions['start_type'] == "TRSL") & (forward_junctions['stop_type'] == "DVG")) | (
                 (forward_junctions['start_type'] == "DVG"))]
             DVGs.to_csv(save_dir_sgmRNAs + sample_name + "_DVGs.txt", sep="\t", index=False)
-            sgmRNA_alt_summary.to_csv(save_dir_sgmRNAs + sample_name + "_minor_sgmRNA_summary.txt", sep="\t", index=False)
-            sgmRNA_alternative.to_csv(save_dir_sgmRNAs + sample_name + "_minor_sgmRNAs.txt", sep="\t",
-                                      index=False)
-            sgmRNA_canonical.to_csv(save_dir_sgmRNAs + sample_name + "_major_sgmRNAs.txt", sep="\t",
-                                      index=False)
             sgmRNA_depth = sum(sgmRNAs['depth'])
-            sgmRNA_canonical_depth = sum(sgmRNA_canonical['depth'])
-            sgmRNA_alternative_depth = sum(sgmRNA_alternative['depth'])
             DVGs_depth = sum(DVGs['depth'])
             sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["total_sgmRNA_depth"]] = sgmRNA_depth
-            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["major_sgmRNA_depth"]] = sgmRNA_canonical_depth
-            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["minor_sgmRNA_depth"]] = sgmRNA_alternative_depth
             sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["DVG_depth"]] = DVGs_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA2_depth']] = sgmRNA2_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA3_depth']] = sgmRNA3_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA4_depth']] = sgmRNA4_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA5_depth']] = sgmRNA5_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA6_depth']] = sgmRNA6_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA7_depth']] = sgmRNA7_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA8_depth']] = sgmRNA8_depth
         if (virus == "SARS2"):
             forward_junctions['start_type'] = forward_junctions['start'].apply(
                 lambda x: "TRSL" if ((x >= 40) & (x <= 105)) else "DVG")
@@ -449,6 +441,7 @@ for file in os.listdir(wd + "Junction_Files/"):
                  )
             ]
             sgmRNAs = sgmRNAs.reset_index(drop=True)
+            sgmRNAs.to_csv(save_dir_sgmRNAs + sample_name + "_sgmRNAs.txt", sep="\t", index=False)
             sgmRNA2 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA2"].sort_values(by=['depth'], ascending=False)
             sgmRNA3 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA3"].sort_values(by=['depth'], ascending=False)
             sgmRNA4 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA4"].sort_values(by=['depth'], ascending=False)
@@ -457,99 +450,78 @@ for file in os.listdir(wd + "Junction_Files/"):
             sgmRNA7 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA7"].sort_values(by=['depth'], ascending=False)
             sgmRNA8 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA8"].sort_values(by=['depth'], ascending=False)
             sgmRNA9 = sgmRNAs.loc[sgmRNAs['stop_type'] == "sgmRNA9"].sort_values(by=['depth'], ascending=False)
-            sgmRNA_canonical = pd.DataFrame()
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA2.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA3.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA4.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA5.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA6.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA7.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA8.head(1), ignore_index=True)
-            sgmRNA_canonical = sgmRNA_canonical.append(sgmRNA9.head(1), ignore_index=True)
-            if (version >= 0.21):
-                sgmRNA_alternative = sgmRNAs.merge(sgmRNA_canonical, on=['genome',
-                                                                         'start',
-                                                                         'stop',
-                                                                         'type',
-                                                                         'depth',
-                                                                         'strand',
-                                                                         'rgb1',
-                                                                         'rgb2',
-                                                                         'start_seq',
-                                                                         'stop_seq',
-                                                                         'start_type',
-                                                                         'frequency',
-                                                                         'stop_type',
-                                                                         'logfreq'], how="left", indicator=True)
-            if (version < 0.21):
-                sgmRNA_alternative = sgmRNAs.merge(sgmRNA_canonical, on=['genome',
-                                                                         'start',
-                                                                         'stop',
-                                                                         'type',
-                                                                         'depth',
-                                                                         'strand',
-                                                                         'start_type',
-                                                                         'frequency',
-                                                                         'stop_type',
-                                                                         'logfreq'], how="left", indicator=True)
-            sgmRNA_alternative = sgmRNA_alternative[sgmRNA_alternative["_merge"] == "left_only"]
-            sgmRNA_alternative = sgmRNA_alternative.reset_index(drop=True)
-            del sgmRNA_alternative["_merge"]
-            sgmRNA_alt_summary = pd.DataFrame(columns=['type', 'depth'])
-            sgmRNA_alt_summary['type'] = ['sgmRNA2',
-                                          'sgmRNA3',
-                                          'sgmRNA4',
-                                          'sgmRNA5',
-                                          'sgmRNA6',
-                                          'sgmRNA7',
-                                          'sgmRNA8',
-                                          'sgmRNA9']
-            sgmRNA2_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA2"]
-            sgmRNA3_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA3"]
-            sgmRNA4_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA4"]
-            sgmRNA5_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA5"]
-            sgmRNA6_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA6"]
-            sgmRNA7_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA7"]
-            sgmRNA8_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA8"]
-            sgmRNA9_alt = sgmRNA_alternative.loc[sgmRNA_alternative['stop_type'] == "sgmRNA9"]
-            sgmRNA2_alt_depth = sum(sgmRNA2_alt['depth'])
-            sgmRNA3_alt_depth = sum(sgmRNA3_alt['depth'])
-            sgmRNA4_alt_depth = sum(sgmRNA4_alt['depth'])
-            sgmRNA5_alt_depth = sum(sgmRNA5_alt['depth'])
-            sgmRNA6_alt_depth = sum(sgmRNA6_alt['depth'])
-            sgmRNA7_alt_depth = sum(sgmRNA7_alt['depth'])
-            sgmRNA8_alt_depth = sum(sgmRNA8_alt['depth'])
-            sgmRNA9_alt_depth = sum(sgmRNA9_alt['depth'])
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA2", ["depth"]] = sgmRNA2_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA3", ["depth"]] = sgmRNA3_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA4", ["depth"]] = sgmRNA4_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA5", ["depth"]] = sgmRNA5_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA6", ["depth"]] = sgmRNA6_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA7", ["depth"]] = sgmRNA7_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA8", ["depth"]] = sgmRNA8_alt_depth
-            sgmRNA_alt_summary.loc[sgmRNA_alt_summary['type'] == "sgmRNA9", ["depth"]] = sgmRNA9_alt_depth
+            sgmRNA2_depth = sum(sgmRNA2['depth'])
+            sgmRNA3_depth = sum(sgmRNA3['depth'])
+            sgmRNA4_depth = sum(sgmRNA4['depth'])
+            sgmRNA5_depth = sum(sgmRNA5['depth'])
+            sgmRNA6_depth = sum(sgmRNA6['depth'])
+            sgmRNA7_depth = sum(sgmRNA7['depth'])
+            sgmRNA8_depth = sum(sgmRNA8['depth'])
+            sgmRNA9_depth = sum(sgmRNA9['depth'])
             DVGs = forward_junctions.loc[
                 ((forward_junctions['start_type'] == "TRSL") & (forward_junctions['stop_type'] == "DVG")) | (
                 (forward_junctions['start_type'] == "DVG"))]
             DVGs.to_csv(save_dir_sgmRNAs + sample_name + "_DVGs.txt", sep="\t", index=False)
-            sgmRNA_alt_summary.to_csv(save_dir_sgmRNAs + sample_name + "_minor_sgmRNA_summary.txt", sep="\t", index=False)
-            sgmRNA_alternative.to_csv(save_dir_sgmRNAs + sample_name + "_minor_sgmRNAs.txt", sep="\t",
-                                      index=False)
-            sgmRNA_canonical.to_csv(save_dir_sgmRNAs + sample_name + "_major_sgmRNAs.txt", sep="\t",
-                                      index=False)
             sgmRNA_depth = sum(sgmRNAs['depth'])
-            sgmRNA_canonical_depth = sum(sgmRNA_canonical['depth'])
-            sgmRNA_alternative_depth = sum(sgmRNA_alternative['depth'])
             DVGs_depth = sum(DVGs['depth'])
             sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["total_sgmRNA_depth"]] = sgmRNA_depth
-            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["major_sgmRNA_depth"]] = sgmRNA_canonical_depth
-            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["minor_sgmRNA_depth"]] = sgmRNA_alternative_depth
             sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ["DVG_depth"]] = DVGs_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA2_depth']] = sgmRNA2_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA3_depth']] = sgmRNA3_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA4_depth']] = sgmRNA4_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA5_depth']] = sgmRNA5_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA6_depth']] = sgmRNA6_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA7_depth']] = sgmRNA7_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA8_depth']] = sgmRNA8_depth
+            sgmRNA_report.loc[sgmRNA_report['sample'] == sample_name, ['sgmRNA9_depth']] = sgmRNA9_depth
 sgmRNA_report['total_junctions'] = sgmRNA_report["total_sgmRNA_depth"] + sgmRNA_report["DVG_depth"]
+if (virus == "MHV"):
+    sgmRNA_report['percent_sgmRNA2'] = (sgmRNA_report['sgmRNA2_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA3'] = (sgmRNA_report['sgmRNA3_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA4'] = (sgmRNA_report['sgmRNA4_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA5'] = (sgmRNA_report['sgmRNA5_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA6'] = (sgmRNA_report['sgmRNA6_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA7'] = (sgmRNA_report['sgmRNA7_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['sgmRNA2_jfreq'] = (sgmRNA_report['sgmRNA2_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA3_jfreq'] = (sgmRNA_report['sgmRNA3_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA4_jfreq'] = (sgmRNA_report['sgmRNA4_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA5_jfreq'] = (sgmRNA_report['sgmRNA5_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA6_jfreq'] = (sgmRNA_report['sgmRNA6_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA7_jfreq'] = (sgmRNA_report['sgmRNA7_depth'] / sgmRNA_report['total_nts']) * 1000000
+if (virus == "MERS"):
+    sgmRNA_report['percent_sgmRNA2'] = (sgmRNA_report['sgmRNA2_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA3'] = (sgmRNA_report['sgmRNA3_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA4'] = (sgmRNA_report['sgmRNA4_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA5'] = (sgmRNA_report['sgmRNA5_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA6'] = (sgmRNA_report['sgmRNA6_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA7'] = (sgmRNA_report['sgmRNA7_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA8'] = (sgmRNA_report['sgmRNA8_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['sgmRNA2_jfreq'] = (sgmRNA_report['sgmRNA2_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA3_jfreq'] = (sgmRNA_report['sgmRNA3_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA4_jfreq'] = (sgmRNA_report['sgmRNA4_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA5_jfreq'] = (sgmRNA_report['sgmRNA5_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA6_jfreq'] = (sgmRNA_report['sgmRNA6_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA7_jfreq'] = (sgmRNA_report['sgmRNA7_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA8_jfreq'] = (sgmRNA_report['sgmRNA8_depth'] / sgmRNA_report['total_nts']) *1000000
+if (virus == "SARS2"):
+    sgmRNA_report['percent_sgmRNA2'] = (sgmRNA_report['sgmRNA2_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA3'] = (sgmRNA_report['sgmRNA3_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA4'] = (sgmRNA_report['sgmRNA4_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA5'] = (sgmRNA_report['sgmRNA5_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA6'] = (sgmRNA_report['sgmRNA6_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA7'] = (sgmRNA_report['sgmRNA7_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA8'] = (sgmRNA_report['sgmRNA8_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['percent_sgmRNA9'] = (sgmRNA_report['sgmRNA9_depth'] / sgmRNA_report['total_junctions']) * 100
+    sgmRNA_report['sgmRNA2_jfreq'] = (sgmRNA_report['sgmRNA2_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA3_jfreq'] = (sgmRNA_report['sgmRNA3_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA4_jfreq'] = (sgmRNA_report['sgmRNA4_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA5_jfreq'] = (sgmRNA_report['sgmRNA5_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA6_jfreq'] = (sgmRNA_report['sgmRNA6_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA7_jfreq'] = (sgmRNA_report['sgmRNA7_depth'] / sgmRNA_report['total_nts']) * 1000000
+    sgmRNA_report['sgmRNA8_jfreq'] = (sgmRNA_report['sgmRNA8_depth'] / sgmRNA_report['total_nts']) *1000000
+    sgmRNA_report['sgmRNA9_jfreq'] = (sgmRNA_report['sgmRNA9_depth'] / sgmRNA_report['total_nts']) * 1000000
 sgmRNA_report["percent_DVGs"] = (sgmRNA_report["DVG_depth"] / sgmRNA_report["total_junctions"]) * 100
-sgmRNA_report['percent_major_sgmRNA'] = (sgmRNA_report['major_sgmRNA_depth'] / sgmRNA_report['total_junctions']) * 100
-sgmRNA_report['percent_minor_sgmRNA'] = (sgmRNA_report['minor_sgmRNA_depth'] / sgmRNA_report['total_junctions']) * 100
+sgmRNA_report['percent_sgmRNA'] = (sgmRNA_report['total_sgmRNA_depth'] / sgmRNA_report['total_junctions']) * 100
 sgmRNA_report["DVG_jfreq"] = (sgmRNA_report["DVG_depth"] / sgmRNA_report["total_nts"]) * 1000000
-sgmRNA_report['major_sgmRNA_jfreq'] = (sgmRNA_report['major_sgmRNA_depth'] / sgmRNA_report['total_nts']) * 1000000
-sgmRNA_report['minor_sgmRNA_jfreq'] = (sgmRNA_report['minor_sgmRNA_depth'] / sgmRNA_report['total_nts']) * 1000000
+sgmRNA_report['sgmRNA_jfreq'] = (sgmRNA_report['total_sgmRNA_depth'] / sgmRNA_report['total_nts']) * 1000000
 sgmRNA_report.to_csv(save_dir_sgmRNAs + exp + "_sgmRNA_DVG_report.txt", sep="\t", index=False)
