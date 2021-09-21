@@ -49,31 +49,3 @@ report.to_csv(od + exp + "_homology.txt", sep="\t")
 #     for i in range(N)[::-1]:
 #         Dist[i] -= sum(Dist[i+1:])
 #     return Dist
-
-#Dist = np.array(MakeTheoreticalDistribution(N))
-#plt.bar(np.arange(N), Dist, width=0.2, color='b')
-#x = 0
-#for i in Files:
-#    if 'MERS' in i:
-#        x += 0.25
-#        plt.bar(np.arange(N) + x, Dict[i], width=0.2, color='orange')
-#plt.bar(np.arange(N), Dist, width=0.2, color='b')
-#x = 0
-#for i in Files:
-#    if 'SARS' in i:
-#        x += 0.25
-#        plt.bar(np.arange(N) + x, Dict[i], width=0.2, color='red')
-#plt.bar(np.arange(N), Dist, width=0.2, color='b')
-#plt.bar(np.arange(N), Dist, width=0.2, color='b')
-#x = 0
-#for i in Files:
-#    if 'WT' in i:
-#        x += 0.25
-#        plt.bar(np.arange(N) + x, Dict[i], width=0.2, color='green')
-#plt.bar(np.arange(N), Dist, width=0.2, color='b')
-#x = 0
-#for i in Files:
-#    if 'XN' in i:
-#        x += 0.25
-#        plt.bar(np.arange(N) + x, Dict[i], width=0.2, color='cyan')
-
