@@ -1,5 +1,6 @@
+##This script runs ViReMa output files and calculates diversity, frequency, type, and adds annotations to detected recombination junctions.
+##Last modified 06/04/21 by Jennifer Gribble
 #!/bin/python3
-##Last modified 06/04/21 by JGB
 import argparse
 import pandas as pd
 import os
